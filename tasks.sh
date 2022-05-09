@@ -59,6 +59,32 @@ fi
 # fi
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Programmer Name: Faiza Tasneem
+#   Description: Zip Split
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+unzip 'zip splitting.zip' 
+
+cp ./'zip splitting'/* ./
+ls ./'zip splitting' > output.txt
+
+split -l 10 -d output.txt splitfile
+
+find -name 'splitfile*' > file.txt
+
+lines=$( cat file.txt | cut -c 3-)
+i=1
+
+for line in $lines
+do 
+   zip archive_$i -@ < "$line"
+   i=$((i+1))
+done
+
+
+# zipsplit -n 260000 archive.zip
 
 
 
