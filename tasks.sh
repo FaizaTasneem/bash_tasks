@@ -88,5 +88,39 @@ done
 
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Programmer Name: Faiza Tasneem
+#   Description: Zip Split along with Index File in each zip
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+unzip 'zip splitting.zip'
+
+cp ./'zip splitting'/* ./
+ls ./'zip splitting' > output.txt
+
+split -l 10 -d output.txt splitfile
+
+find -name 'splitfile*' > file.txt
+
+lines=$( cat file.txt | cut -c 3-)
+i=1
+j=1
+
+for line in $lines
+do 
+   echo "$line"
+   lines1=$( cat "$line" )   
+   for line1 in $lines1
+   do
+     grep -B11 -A2 "${line1}" RWCU_NOTICES_DLC_1.xml >> demo_$j.xml
+   done
+   head -n5 RWCU_NOTICES_DLC_1.xml > index_$j.xml
+   cat demo_$j.xml >> index_$j.xml
+   tail -n2 RWCU_NOTICES_DLC_1.xml >> index_$j.xml
+   find -name index_$j.xml >> "$line"
+   
+   zip archive_$i -@ < "$line"
+   i=$((i+1))
+   j=$((j+1))
+done
